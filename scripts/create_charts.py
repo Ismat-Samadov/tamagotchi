@@ -184,14 +184,11 @@ def chart4_rating_distribution(shops):
     ax.set_title('Distribution of Coffee Shop Ratings in Baku',
                  fontsize=17, weight='bold', pad=20)
 
-    # Position legend to avoid overlap
-    ax.legend(fontsize=12, loc='upper left', framealpha=0.9)
-
-    # Add statistics text box - position it better
-    stats_text = f'Total Shops: {len(ratings)}\nAvg Rating: {mean_val:.2f}\nMedian: {median_val:.2f}\nStd Dev: {np.std(ratings):.2f}'
+    # Add statistics text box in upper right - includes mean, median, std dev
+    stats_text = f'Total Shops: {len(ratings)}\nMean: {mean_val:.2f}\nMedian: {median_val:.2f}\nStd Dev: {np.std(ratings):.2f}'
     ax.text(0.98, 0.97, stats_text, transform=ax.transAxes,
             fontsize=11, verticalalignment='top', horizontalalignment='right',
-            bbox=dict(boxstyle='round', facecolor='white', alpha=0.85, edgecolor='gray', linewidth=1.5))
+            bbox=dict(boxstyle='round', facecolor='white', alpha=0.9, edgecolor='gray', linewidth=1.5))
 
     # Add grid for better readability
     ax.grid(True, alpha=0.3, axis='y')
