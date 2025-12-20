@@ -153,9 +153,10 @@ def chart4_rating_distribution(shops):
     """Chart 4: Overall Rating Distribution"""
     ratings = [float(s['rating']) for s in shops if s['rating'] != 'N/A']
 
-    fig, ax = plt.subplots(figsize=(12, 7))
+    fig, ax = plt.subplots(figsize=(14, 8))
 
-    n, bins, patches = ax.hist(ratings, bins=20, edgecolor='black', alpha=0.7)
+    # Use fewer bins to reduce clutter
+    n, bins, patches = ax.hist(ratings, bins=12, edgecolor='black', alpha=0.75, linewidth=1.5)
 
     # Color bars by rating
     for i, patch in enumerate(patches):
@@ -169,22 +170,32 @@ def chart4_rating_distribution(shops):
         else:
             patch.set_facecolor('#e74c3c')
 
-    ax.axvline(np.mean(ratings), color='red', linestyle='--', linewidth=2,
-               label=f'Mean: {np.mean(ratings):.2f}')
-    ax.axvline(np.median(ratings), color='blue', linestyle='--', linewidth=2,
-               label=f'Median: {np.median(ratings):.2f}')
+    # Add mean and median lines
+    mean_val = np.mean(ratings)
+    median_val = np.median(ratings)
 
-    ax.set_xlabel('Rating (out of 5)', fontsize=12, weight='bold')
-    ax.set_ylabel('Number of Coffee Shops', fontsize=12, weight='bold')
+    ax.axvline(mean_val, color='#c0392b', linestyle='--', linewidth=2.5,
+               label=f'Mean: {mean_val:.2f}', alpha=0.8)
+    ax.axvline(median_val, color='#2980b9', linestyle=':', linewidth=2.5,
+               label=f'Median: {median_val:.2f}', alpha=0.8)
+
+    ax.set_xlabel('Rating (out of 5)', fontsize=13, weight='bold')
+    ax.set_ylabel('Number of Coffee Shops', fontsize=13, weight='bold')
     ax.set_title('Distribution of Coffee Shop Ratings in Baku',
-                 fontsize=16, weight='bold', pad=20)
-    ax.legend(fontsize=11)
+                 fontsize=17, weight='bold', pad=20)
 
-    # Add statistics text
-    stats_text = f'Total Shops: {len(ratings)}\nAvg Rating: {np.mean(ratings):.2f}\nStd Dev: {np.std(ratings):.2f}'
-    ax.text(0.02, 0.98, stats_text, transform=ax.transAxes,
-            fontsize=11, verticalalignment='top',
-            bbox=dict(boxstyle='round', facecolor='wheat', alpha=0.5))
+    # Position legend to avoid overlap
+    ax.legend(fontsize=12, loc='upper left', framealpha=0.9)
+
+    # Add statistics text box - position it better
+    stats_text = f'Total Shops: {len(ratings)}\nAvg Rating: {mean_val:.2f}\nMedian: {median_val:.2f}\nStd Dev: {np.std(ratings):.2f}'
+    ax.text(0.98, 0.97, stats_text, transform=ax.transAxes,
+            fontsize=11, verticalalignment='top', horizontalalignment='right',
+            bbox=dict(boxstyle='round', facecolor='white', alpha=0.85, edgecolor='gray', linewidth=1.5))
+
+    # Add grid for better readability
+    ax.grid(True, alpha=0.3, axis='y')
+    ax.set_axisbelow(True)
 
     plt.tight_layout()
     plt.savefig(os.path.join(CHARTS_DIR, '4_rating_distribution.png'), dpi=300, bbox_inches='tight')
